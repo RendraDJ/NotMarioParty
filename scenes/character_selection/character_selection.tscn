@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://cde0kffflchr7"]
+
+[ext_resource type="Texture2D" uid="uid://m4ln0iidyis0" path="res://mario_suit.png" id="1_i2mgw"]
+[ext_resource type="Texture2D" uid="uid://b1tw6nmqs2msu" path="res://bg2.png" id="1_yts48"]
+[ext_resource type="Texture2D" uid="uid://bcappprp2qc2h" path="res://mario_king.png" id="2_h4xva"]
+[ext_resource type="Texture2D" uid="uid://m8hd7tbc74po" path="res://mario_pirate.png" id="3_uckre"]
+[ext_resource type="Texture2D" uid="uid://dtyk2lldxhwih" path="res://mario_caveman.png" id="4_764ic"]
+[ext_resource type="Texture2D" uid="uid://b0t32fafdsgg3" path="res://Character-Select-9-26-2024 (1).png" id="5_5klox"]
+
+[node name="CharacterSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(588, 329)
+scale = Vector2(1.1354, 1.1354)
+texture = ExtResource("1_yts48")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+offset_left = 108.0
+offset_top = 189.0
+offset_right = 1976.0
+offset_bottom = 531.0
+scale = Vector2(0.5, 0.5)
+theme_override_constants/h_separation = 54
+columns = 4
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer"]
+layout_mode = 2
+texture = ExtResource("1_i2mgw")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="GridContainer"]
+layout_mode = 2
+texture = ExtResource("2_h4xva")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="GridContainer"]
+layout_mode = 2
+texture = ExtResource("3_uckre")
+expand_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="GridContainer"]
+layout_mode = 2
+texture = ExtResource("4_764ic")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(576, 101)
+scale = Vector2(0.444739, 0.444739)
+texture = ExtResource("5_5klox")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://vbmxig2b3b33"]
+
+[ext_resource type="AudioStream" uid="uid://c2bhpyg2mufcl" path="res://scenes/menus/main_menu/mainMenu_ressources/øneheart - nostalgia.mp3" id="1_ugvox"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_ugvox")
+volume_db = -37.504
+autoplay = true
+parameters/looping = true
