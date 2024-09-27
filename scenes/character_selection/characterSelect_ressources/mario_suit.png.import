@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtyk2lldxhwih"
-path="res://.godot/imported/mario_caveman.png-7984c2ae208233352cbb1e2014dc8a8b.ctex"
+uid="uid://m4ln0iidyis0"
+path="res://.godot/imported/mario_suit.png-a171420ae0cf35c3a66357ae5f986e31.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mario_caveman.png"
-dest_files=["res://.godot/imported/mario_caveman.png-7984c2ae208233352cbb1e2014dc8a8b.ctex"]
+source_file="res://scenes/character_selection/characterSelect_ressources/mario_suit.png"
+dest_files=["res://.godot/imported/mario_suit.png-a171420ae0cf35c3a66357ae5f986e31.ctex"]
 
 [params]
 

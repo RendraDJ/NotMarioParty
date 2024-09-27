@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://m8hd7tbc74po"
-path="res://.godot/imported/mario_pirate.png-87b1f26a3bd58e375e1da4cb9748039e.ctex"
+path="res://.godot/imported/mario_pirate.png-70bce614e7eaa59349cbae715c0fa00f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mario_pirate.png"
-dest_files=["res://.godot/imported/mario_pirate.png-87b1f26a3bd58e375e1da4cb9748039e.ctex"]
+source_file="res://scenes/character_selection/characterSelect_ressources/mario_pirate.png"
+dest_files=["res://.godot/imported/mario_pirate.png-70bce614e7eaa59349cbae715c0fa00f.ctex"]
 
 [params]
 

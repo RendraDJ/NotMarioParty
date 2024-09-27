@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcappprp2qc2h"
-path="res://.godot/imported/mario_king.png-a3e2e1e632b4eb59285bb8f484385d97.ctex"
+uid="uid://b1tw6nmqs2msu"
+path="res://.godot/imported/bg2.png-61a5a1d7b22474fc158797315b9a68b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mario_king.png"
-dest_files=["res://.godot/imported/mario_king.png-a3e2e1e632b4eb59285bb8f484385d97.ctex"]
+source_file="res://scenes/character_selection/characterSelect_ressources/bg2.png"
+dest_files=["res://.godot/imported/bg2.png-61a5a1d7b22474fc158797315b9a68b8.ctex"]
 
 [params]
 
