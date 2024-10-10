@@ -1,7 +1,0 @@
-(Scale) [Rotation] <Transform>
-----------------------------------------------------------------------------------------------------
-CAPPY PLACEMENT (Relative to local position of "Cap" bone, or "JointRoot" for Cap-Throw models):
-
-Caveman Headwear: (1, 1, 1) [-3, 0, 0] <0, 48, 10>
-Caveman Headwear (Cap Throw): (1.5, 1.5, 1.5) [0, 0, 0] <0, 34, 8>
-----------------------------------------------------------------------------------------------------
