@@ -273,12 +273,10 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_rmgyw")
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("player1", "player2", "player_one_score", "player_two_score")]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("player1", "player2")]
 script = ExtResource("1_h8wmp")
 player1 = NodePath("player1")
 player2 = NodePath("player2")
-player_one_score = NodePath("player_one_score")
-player_two_score = NodePath("player_two_score")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 
@@ -301,15 +299,3 @@ position = Vector2(376, 585)
 
 [node name="player2" parent="." instance=ExtResource("3_kn03g")]
 position = Vector2(358, 588)
-
-[node name="player_one_score" type="Label" parent="."]
-offset_left = 64.0
-offset_top = 4.0
-offset_right = 104.0
-offset_bottom = 27.0
-
-[node name="player_two_score" type="Label" parent="."]
-offset_left = 216.0
-offset_top = 4.0
-offset_right = 256.0
-offset_bottom = 27.0

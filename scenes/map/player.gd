@@ -1,73 +1,27 @@
-extends Node2D
+extends Node
 
-# List of allowed movement tiles
-var allowed_tiles: Array = [
-	Vector2(11, 18),
-	Vector2(11, 16),
-	Vector2(11, 14),
-	Vector2(11, 12),
-	Vector2(13, 12),
-	Vector2(15, 12),
-	Vector2(17, 12),
-	Vector2(21, 12),
-	Vector2(23, 12),
-	Vector2(24, 10),
-	Vector2(24, 8),
-	Vector2(24, 6),
-	Vector2(24, 4),
-	Vector2(24, 2),
-	Vector2(24, 0),
-	Vector2(22, 0),
-	Vector2(20, 0),
-	Vector2(18, 0),
-	Vector2(16, 0),
-	Vector2(14, 0),
-	Vector2(12, 0),
-	Vector2(10, 2),
-	Vector2(8, 4),
-	Vector2(6, 6),
-	Vector2(4, 6),
-	Vector2(3, 8),
-	Vector2(1, 8),
-	Vector2(1, 10),
-	Vector2(1, 12),
-	Vector2(1, 14),
-	Vector2(3, 14),
-	Vector2(5, 14),
-	Vector2(6, 14),
-	Vector2(9, 14)  # Add your specific yellow tiles
+var tile_coordinates = [
+	Vector2(377,587), Vector2(368,517), Vector2(368,452),
+	Vector2(368,388), Vector2(432,388), Vector2(495,388),
+	Vector2(558,388), Vector2(623,388), Vector2(689,388),
+	Vector2(752,388), Vector2(784,321), Vector2(784,259),
+	Vector2(784,196), Vector2(784,132), Vector2(784,67),
+	Vector2(784,4), Vector2(720,4), Vector2(655,4),
+	Vector2(592,4), Vector2(529,4), Vector2(463,4),
+	Vector2(399,4), Vector2(336,68), Vector2(271,133),
+	Vector2(208,196), Vector2(144,196), Vector2(111,259),
+	Vector2(48,259), Vector2(48,324), Vector2(48,388),
+	Vector2(48,452), Vector2(110,452), Vector2(175,452),
+	Vector2(239,452), Vector2(306,452), Vector2(368,452)
 ]
 
-# Reference to the groud TileMapLayer
-#@onready var ground_layer = get_node("../ground")  # Access the specific TileMapLayer named "groud
-@onready var ground_layer : TileMapLayer = $ground
-# Player's current position in tile coordinates
-var current_tile: Vector2 = Vector2(11, 18)  # Starting tile
-var tile_size: Vector2 = Vector2(32, 32)  # Set the tile size to whatever your tiles are
+# Set a delay for movement
+var move_delay = 0.3
 
-func _ready():
-	set_position_to_tile(current_tile)
-	print("Player starting position set to:", current_tile)
-
-func roll_dice():
-	# Simulating a dice roll between 1 and 6
-	var dice_roll = randi() % 6 + 1
-	print("Rolled: ", dice_roll)
-
-	# Move to a new tile based on the rolled value
-	move_player(dice_roll)
-
-func move_player(dice_value: int):
-	# Calculate potential new tile position
-	var new_tile = current_tile + Vector2(dice_value, 0)
-
-	# Check if the new tile is in the allowed tiles
-	if allowed_tiles.find(new_tile) != -1:
-		current_tile = new_tile  # Update to the new tile
-		print("Moving player to tile:", current_tile)
-		set_position_to_tile(current_tile)
-	else:
-		print("Cannot move to this tile:", new_tile)
-
-func set_position_to_tile(tile_position: Vector2):
-	position = tile_position * tile_size  # Set the player's position based on the tile size
+# Function to move the player along the path
+func move_player(player: Node2D, start_pos: int, steps: int) -> int:
+	var target_pos = min(start_pos + steps, tile_coordinates.size())
+	for i in range(start_pos, target_pos):
+		await get_tree().create_timer(move_delay).timeout
+		player.position = tile_coordinates[i]
+	return target_pos

@@ -1,14 +1,16 @@
 extends Node2D
 
-# Declare variables for players and their positions on the map
 @export var player1: Node2D
 @export var player2: Node2D
 
+@export var player_one_score: Label
+@export var player_two_score: Label
+
 # Yellow tile coordinates (coordinates must be added manually in the order of movement)
 var tile_coordinates = [
-	Vector2(377,587),
-	Vector2(368,517),
-	Vector2(368,452),
+	Vector2(377, 587),
+	Vector2(368, 517),
+	Vector2(368, 452),
 	Vector2(368, 388),
 	Vector2(432, 388),
 	Vector2(495, 388),
@@ -41,8 +43,34 @@ var tile_coordinates = [
 	Vector2(175, 452),
 	Vector2(239, 452),
 	Vector2(306, 452),
-	Vector2(368,452)
+	Vector2(368, 452)
 ]
+
+# Define the positions of bonus, minus, and star tiles
+var bonus_tiles = [
+	Vector2(368, 452), 
+	Vector2(623, 388),
+	Vector2(480, 300),  # New bonus tile
+	Vector2(300, 450),  # New bonus tile
+	Vector2(540, 200),  # New bonus tile
+	Vector2(720, 200),  # New bonus tile
+	Vector2(150, 100),  # New bonus tile
+	Vector2(375, 450),  # New bonus tile
+	Vector2(650, 350)   # New bonus tile
+] 
+
+var minus_tiles = [
+	Vector2(144, 196), 
+	Vector2(48, 324),
+	Vector2(400, 100),  # New minus tile
+	Vector2(500, 350),  # New minus tile
+	Vector2(150, 250),  # New minus tile
+	Vector2(300, 100),  # New minus tile
+	Vector2(450, 450),  # New minus tile
+	Vector2(600, 250)   # New minus tile
+]   
+
+var star_tile = Vector2(784, 132)  # Starting position of the star tile
 
 # Player positions in the tile path
 var player1_position = 0
@@ -55,7 +83,13 @@ var dice_max = 6
 # Set a delay for movement
 var move_delay = 0.3
 
-# Random number generator for dice rolls
+# Player coin and star counts
+var player1_coins = 0
+var player2_coins = 0
+var player1_stars = 0
+var player2_stars = 0
+
+# Random number generator for dice rolls and tile assignment
 var random = RandomNumberGenerator.new()
 
 # Function to roll dice
@@ -68,7 +102,64 @@ func move_player(player: Node2D, start_pos: int, steps: int) -> int:
 	for i in range(start_pos, target_pos):
 		await get_tree().create_timer(move_delay).timeout
 		player.position = tile_coordinates[i]
+	
+	# Check tile effect only after reaching the target position
+	check_tile_effect(player)
 	return target_pos
+
+# Function to check if player landed on a special tile and apply effects
+func check_tile_effect(player: Node2D):
+	var player_position = player.position
+	if player_position in bonus_tiles:
+		print(player.name, " landed on a bonus tile!")
+		gain_coins(player, 5)  # Gain 5 coins
+	elif player_position in minus_tiles:
+		print(player.name, " landed on a minus tile!")
+		gain_coins(player, -3)  # Lose 3 coins
+	elif player_position == star_tile:
+		print(player.name, " collected a star!")
+		gain_star(player)
+		move_star_tile()  # Move the star to a new position
+
+# Function to add or subtract coins
+func gain_coins(player: Node2D, amount: int):
+	if player == player1:
+		player1_coins += amount
+		print("Player 1 coins:", player1_coins)  # Debugging line
+		update_player_ui(player1)
+	elif player == player2:
+		player2_coins += amount
+		print("Player 2 coins:", player2_coins)  # Debugging line
+		update_player_ui(player2)
+
+# Function to add a star
+func gain_star(player: Node2D):
+	if player == player1:
+		player1_stars += 1
+		print("Player 1 stars:", player1_stars)  # Debugging line
+		update_player_ui(player1)
+	elif player == player2:
+		player2_stars += 1
+		print("Player 2 stars:", player2_stars)  # Debugging line
+		update_player_ui(player2)
+
+# Function to update the UI with the player’s coin and star counts
+func update_player_ui(player: Node2D):
+	if player == player1:
+		if player_one_score:
+			player_one_score.text = "Coins: %d, Stars: %d" % [player1_coins, player1_stars]
+		else:
+			print("Error: player_one_score label is not assigned or doesn't exist.")
+	elif player == player2:
+		if player_two_score:
+			player_two_score.text = "Coins: %d, Stars: %d" % [player2_coins, player2_stars]
+		else:
+			print("Error: player_two_score label is not assigned or doesn't exist.")
+
+# Function to move the star tile to a random location
+func move_star_tile():
+	star_tile = tile_coordinates[random.randi_range(0, tile_coordinates.size() - 1)]
+	print("Star has moved to:", star_tile)
 
 # Function to play the game automatically
 func play_game():
@@ -88,4 +179,15 @@ func play_game():
 
 # Start the game automatically when the scene is ready
 func _ready():
+	# Check if score labels are set
+	if not player_one_score:
+		print("Warning: player_one_score label is not assigned.")
+	if not player_two_score:
+		print("Warning: player_two_score label is not assigned.")
+	
+	# Initialize the UI for both players
+	update_player_ui(player1)
+	update_player_ui(player2)
+	
+	# Start the game
 	play_game()
