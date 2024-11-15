@@ -48,7 +48,7 @@ var tile_coordinates = [
 
 # Define the positions of bonus, minus, and star tiles
 var bonus_tiles = [
-	Vector2(368, 452), 
+	Vector2(368, 452),
 	Vector2(623, 388),
 	Vector2(480, 300),  # New bonus tile
 	Vector2(300, 450),  # New bonus tile
@@ -60,7 +60,7 @@ var bonus_tiles = [
 ] 
 
 var minus_tiles = [
-	Vector2(144, 196), 
+	Vector2(144, 196),
 	Vector2(48, 324),
 	Vector2(400, 100),  # New minus tile
 	Vector2(500, 350),  # New minus tile
@@ -71,6 +71,9 @@ var minus_tiles = [
 ]   
 
 var star_tile = Vector2(784, 132)  # Starting position of the star tile
+
+# Load the coin scene
+var CoinScene = preload("res://scenes/map/coin.tscn")  # Replace with the actual path to your Coin scene
 
 # Player positions in the tile path
 var player1_position = 0
@@ -100,7 +103,7 @@ func roll_dice() -> int:
 func move_player(player: Node2D, start_pos: int, steps: int) -> int:
 	var target_pos = min(start_pos + steps, tile_coordinates.size())
 	for i in range(start_pos, target_pos):
-		await get_tree().create_timer(move_delay).timeout
+		await get_tree().create_timer(move_delay).timeout  # Use await here to wait for the timer
 		player.position = tile_coordinates[i]
 	
 	# Check tile effect only after reaching the target position
@@ -110,13 +113,19 @@ func move_player(player: Node2D, start_pos: int, steps: int) -> int:
 # Function to check if player landed on a special tile and apply effects
 func check_tile_effect(player: Node2D):
 	var player_position = player.position
-	if player_position in bonus_tiles:
-		print(player.name, " landed on a bonus tile!")
-		gain_coins(player, 5)  # Gain 5 coins
-	elif player_position in minus_tiles:
-		print(player.name, " landed on a minus tile!")
-		gain_coins(player, -3)  # Lose 3 coins
-	elif player_position == star_tile:
+	for position in bonus_tiles:
+		if player_position.distance_to(position) < 10:  # Allowing small tolerance
+			print(player.name, " landed on a bonus tile!")
+			gain_coins(player, 5)
+			return  # Return after applying bonus
+
+	for position in minus_tiles:
+		if player_position.distance_to(position) < 10:  # Allowing small tolerance
+			print(player.name, " landed on a minus tile!")
+			gain_coins(player, -3)
+			return  # Return after applying minus
+
+	if player_position == star_tile:
 		print(player.name, " collected a star!")
 		gain_star(player)
 		move_star_tile()  # Move the star to a new position
@@ -132,7 +141,7 @@ func gain_coins(player: Node2D, amount: int):
 		print("Player 2 coins:", player2_coins)  # Debugging line
 		update_player_ui(player2)
 
-# Function to add a star
+# Function to add a star to the player
 func gain_star(player: Node2D):
 	if player == player1:
 		player1_stars += 1
@@ -143,39 +152,26 @@ func gain_star(player: Node2D):
 		print("Player 2 stars:", player2_stars)  # Debugging line
 		update_player_ui(player2)
 
-# Function to update the UI with the player’s coin and star counts
+# Function to update player UI labels
 func update_player_ui(player: Node2D):
 	if player == player1:
-		if player_one_score:
-			player_one_score.text = "Coins: %d, Stars: %d" % [player1_coins, player1_stars]
-		else:
-			print("Error: player_one_score label is not assigned or doesn't exist.")
+		player_one_score.text = "Player 1: Coins = " + str(player1_coins) + ", Stars = " + str(player1_stars)
 	elif player == player2:
-		if player_two_score:
-			player_two_score.text = "Coins: %d, Stars: %d" % [player2_coins, player2_stars]
-		else:
-			print("Error: player_two_score label is not assigned or doesn't exist.")
+		player_two_score.text = "Player 2: Coins = " + str(player2_coins) + ", Stars = " + str(player2_stars)
 
-# Function to move the star tile to a random location
+# Move the star tile to a new random position
 func move_star_tile():
 	star_tile = tile_coordinates[random.randi_range(0, tile_coordinates.size() - 1)]
-	print("Star has moved to:", star_tile)
+	print("New star tile position:", star_tile)  # Debugging line
 
-# Function to play the game automatically
-func play_game():
-	while player1_position < tile_coordinates.size() and player2_position < tile_coordinates.size():
-		
-		# Player 1 rolls the dice and moves
-		var player1_roll = roll_dice()
-		print("Player 1 rolls: ", player1_roll)
-		player1_position = await move_player(player1, player1_position, player1_roll)
-		await get_tree().create_timer(1.0).timeout # Add a delay between turns
-		
-		# Player 2 rolls the dice and moves
-		var player2_roll = roll_dice()
-		print("Player 2 rolls: ", player2_roll)
-		player2_position = await move_player(player2, player2_position, player2_roll)
-		await get_tree().create_timer(1.0).timeout # Add a delay between turns
+# Function to place coins on the bonus tiles
+func place_coins():
+	for position in bonus_tiles:
+		print("Placing coin at: ", position)  # Debugging line
+		var coin_instance = CoinScene.instantiate()
+		coin_instance.position = position
+		coin_instance.z_index = 10  # Make sure the coins appear above other tiles
+		add_child(coin_instance)
 
 # Start the game automatically when the scene is ready
 func _ready():
@@ -190,4 +186,22 @@ func _ready():
 	update_player_ui(player2)
 	
 	# Start the game
+	place_coins()  # Place coins on bonus tiles
 	play_game()
+
+# Main function to control the game flow
+func play_game():
+	while true:  # Loop until the game ends
+		# Player 1 rolls the dice and moves
+		var player1_roll = roll_dice()
+		print("Player 1 rolls: ", player1_roll)
+		player1_position = await move_player(player1, player1_position, player1_roll)
+		
+		# Player 2's turn
+		await get_tree().create_timer(1.0).timeout
+		var player2_roll = roll_dice()
+		print("Player 2 rolls: ", player2_roll)
+		player2_position = await move_player(player2, player2_position, player2_roll)
+		
+		# Delay before looping again
+		await get_tree().create_timer(1.0).timeout

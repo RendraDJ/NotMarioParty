@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://bmvr6kagnh4td"]
+[gd_scene load_steps=8 format=4 uid="uid://bmvr6kagnh4td"]
 
 [ext_resource type="Script" path="res://scenes/map/game_manager.gd" id="1_h8wmp"]
 [ext_resource type="Texture2D" uid="uid://bixmv73nf1pvv" path="res://assets/characters/2d/Dungeon_Tileset.png" id="1_m23nn"]
 [ext_resource type="PackedScene" uid="uid://ccmqya1jw00jj" path="res://scenes/map/perso2.tscn" id="2_2rw6o"]
 [ext_resource type="PackedScene" uid="uid://co8rmkmlukhtv" path="res://scenes/map/perso1.tscn" id="3_kn03g"]
+[ext_resource type="PackedScene" uid="uid://cyunqt1vy77o7" path="res://scenes/map/coin.tscn" id="5_sarix"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rmgyw"]
 texture = ExtResource("1_m23nn")
@@ -313,3 +314,7 @@ offset_left = 216.0
 offset_top = 4.0
 offset_right = 256.0
 offset_bottom = 27.0
+
+[node name="Coin" parent="." instance=ExtResource("5_sarix")]
+position = Vector2(391, 646)
+scale = Vector2(0.154701, 0.154701)

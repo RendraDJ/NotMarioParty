@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyunqt1vy77o7"]
+
+[ext_resource type="Texture2D" uid="uid://cdtxtd6qmtbbw" path="res://scenes/map/pngegg.png" id="1_pt7ka"]
+
+[node name="Coin" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0126582, 0.0126582)
+texture = ExtResource("1_pt7ka")
