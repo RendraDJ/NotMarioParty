@@ -1,12 +1,10 @@
-[gd_scene load_steps=10 format=4 uid="uid://bmvr6kagnh4td"]
+[gd_scene load_steps=8 format=4 uid="uid://bmvr6kagnh4td"]
 
 [ext_resource type="Script" path="res://scenes/map/game_manager.gd" id="1_h8wmp"]
 [ext_resource type="Texture2D" uid="uid://bixmv73nf1pvv" path="res://assets/characters/2d/Dungeon_Tileset.png" id="1_m23nn"]
 [ext_resource type="PackedScene" uid="uid://ccmqya1jw00jj" path="res://scenes/map/perso2.tscn" id="2_2rw6o"]
 [ext_resource type="PackedScene" uid="uid://co8rmkmlukhtv" path="res://scenes/map/perso1.tscn" id="3_kn03g"]
 [ext_resource type="PackedScene" uid="uid://cyunqt1vy77o7" path="res://scenes/map/coin.tscn" id="5_sarix"]
-[ext_resource type="PackedScene" uid="uid://owwy7y7adup3" path="res://scenes/map/redcoin.tscn" id="6_41syi"]
-[ext_resource type="PackedScene" uid="uid://d1gn6blhtbik5" path="res://scenes/map/star.tscn" id="7_k7rfu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rmgyw"]
 texture = ExtResource("1_m23nn")
@@ -277,7 +275,6 @@ tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_rmgyw")
 
 [node name="Node2D" type="Node2D" node_paths=PackedStringArray("player1", "player2", "player_one_score", "player_two_score")]
-position = Vector2(0, 6)
 script = ExtResource("1_h8wmp")
 player1 = NodePath("player1")
 player2 = NodePath("player2")
@@ -301,29 +298,23 @@ use_parent_material = true
 tile_set = SubResource("TileSet_gdfbo")
 
 [node name="player1" parent="." instance=ExtResource("2_2rw6o")]
-position = Vector2(380, 609)
+position = Vector2(376, 585)
 
 [node name="player2" parent="." instance=ExtResource("3_kn03g")]
-position = Vector2(354, 612)
+position = Vector2(358, 588)
 
 [node name="player_one_score" type="Label" parent="."]
-offset_left = 38.0
-offset_top = 613.0
-offset_right = 78.0
-offset_bottom = 636.0
+offset_left = 64.0
+offset_top = 4.0
+offset_right = 104.0
+offset_bottom = 27.0
 
 [node name="player_two_score" type="Label" parent="."]
-offset_left = 504.0
-offset_top = 612.0
-offset_right = 544.0
-offset_bottom = 635.0
+offset_left = 216.0
+offset_top = 4.0
+offset_right = 256.0
+offset_bottom = 27.0
 
 [node name="Coin" parent="." instance=ExtResource("5_sarix")]
-position = Vector2(398, 727)
+position = Vector2(391, 646)
 scale = Vector2(0.154701, 0.154701)
-
-[node name="Redcoin" parent="." instance=ExtResource("6_41syi")]
-position = Vector2(432, 732)
-
-[node name="Star" parent="." instance=ExtResource("7_k7rfu")]
-position = Vector2(330, 754)

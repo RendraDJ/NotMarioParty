@@ -47,33 +47,15 @@ var tile_coordinates = [
 ]
 
 # Define the positions of bonus, minus, and star tiles
-var bonus_tiles = [
-	Vector2(368, 452),
-	Vector2(623, 388),
-	Vector2(480, 300),  # New bonus tile
-	Vector2(300, 450),  # New bonus tile
-	Vector2(540, 200),  # New bonus tile
-	Vector2(720, 200),  # New bonus tile
-	Vector2(150, 100),  # New bonus tile
-	Vector2(375, 450),  # New bonus tile
-	Vector2(650, 350)   # New bonus tile
-] 
-
-var minus_tiles = [
-	Vector2(144, 196),
-	Vector2(48, 324),
-	Vector2(400, 100),  # New minus tile
-	Vector2(500, 350),  # New minus tile
-	Vector2(150, 250),  # New minus tile
-	Vector2(300, 100),  # New minus tile
-	Vector2(450, 450),  # New minus tile
-	Vector2(600, 250)   # New minus tile
-]   
-
-var star_tile = Vector2(784, 132)  # Starting position of the star tile
+var bonus_tiles = []
+var minus_tiles = []
+var star_tile = Vector2(784, 132)
 
 # Load the coin scene
 var CoinScene = preload("res://scenes/map/coin.tscn")  # Replace with the actual path to your Coin scene
+
+# Dictionary to map tile positions to their coin instances
+var coins_on_tiles = {}
 
 # Player positions in the tile path
 var player1_position = 0
@@ -95,6 +77,23 @@ var player2_stars = 0
 # Random number generator for dice rolls and tile assignment
 var random = RandomNumberGenerator.new()
 
+# Function to randomly select tiles for bonus and minus tiles
+func generate_random_tiles():
+	var available_tiles = tile_coordinates.duplicate()  # Copy tile coordinates to avoid modifying the original
+	
+	# Shuffle the tiles for randomness
+	random.randomize()
+	available_tiles.shuffle()
+	
+	# Select the first 6 tiles for bonus
+	bonus_tiles = available_tiles.slice(0, 6)
+	
+	# Select the next 6 tiles for minus
+	minus_tiles = available_tiles.slice(6, 12)
+	
+	print("Generated Bonus Tiles: ", bonus_tiles)
+	print("Generated Minus Tiles: ", minus_tiles)
+
 # Function to roll dice
 func roll_dice() -> int:
 	return random.randi_range(dice_min, dice_max)
@@ -103,53 +102,66 @@ func roll_dice() -> int:
 func move_player(player: Node2D, start_pos: int, steps: int) -> int:
 	var target_pos = min(start_pos + steps, tile_coordinates.size())
 	for i in range(start_pos, target_pos):
-		await get_tree().create_timer(move_delay).timeout  # Use await here to wait for the timer
+		await get_tree().create_timer(move_delay).timeout
 		player.position = tile_coordinates[i]
+		check_tile_effect(player)
 	
-	# Check tile effect only after reaching the target position
-	check_tile_effect(player)
 	return target_pos
 
 # Function to check if player landed on a special tile and apply effects
 func check_tile_effect(player: Node2D):
 	var player_position = player.position
-	for position in bonus_tiles:
-		if player_position.distance_to(position) < 10:  # Allowing small tolerance
+	for bonus_tile in bonus_tiles:
+		if player_position.distance_to(bonus_tile) < 10:
 			print(player.name, " landed on a bonus tile!")
 			gain_coins(player, 5)
-			return  # Return after applying bonus
+			# Remove the tile from bonus_tiles so it won't affect others
+			bonus_tiles.erase(bonus_tile)
+			return
 
-	for position in minus_tiles:
-		if player_position.distance_to(position) < 10:  # Allowing small tolerance
+	for minus_tile in minus_tiles:
+		if player_position.distance_to(minus_tile) < 10:
 			print(player.name, " landed on a minus tile!")
 			gain_coins(player, -3)
-			return  # Return after applying minus
+			# Remove the tile from minus_tiles
+			minus_tiles.erase(minus_tile)
+			return
 
 	if player_position == star_tile:
 		print(player.name, " collected a star!")
 		gain_star(player)
-		move_star_tile()  # Move the star to a new position
+		move_star_tile()
 
-# Function to add or subtract coins
+# Function to add or subtract coins and handle coin collection
 func gain_coins(player: Node2D, amount: int):
+	var player_position = player.position
+	for coin_tile in coins_on_tiles.keys():
+		if player_position.distance_to(coin_tile) < 10:
+			# Remove the coin instance
+			var coin_instance = coins_on_tiles[coin_tile]
+			if coin_instance:
+				coin_instance.queue_free()
+				coins_on_tiles.erase(coin_tile)
+				print("Coin collected at: ", coin_tile)
+
 	if player == player1:
 		player1_coins += amount
-		print("Player 1 coins:", player1_coins)  # Debugging line
+		print("Player 1 coins:", player1_coins)
 		update_player_ui(player1)
 	elif player == player2:
 		player2_coins += amount
-		print("Player 2 coins:", player2_coins)  # Debugging line
+		print("Player 2 coins:", player2_coins)
 		update_player_ui(player2)
 
 # Function to add a star to the player
 func gain_star(player: Node2D):
 	if player == player1:
 		player1_stars += 1
-		print("Player 1 stars:", player1_stars)  # Debugging line
+		print("Player 1 stars:", player1_stars)
 		update_player_ui(player1)
 	elif player == player2:
 		player2_stars += 1
-		print("Player 2 stars:", player2_stars)  # Debugging line
+		print("Player 2 stars:", player2_stars)
 		update_player_ui(player2)
 
 # Function to update player UI labels
@@ -162,46 +174,54 @@ func update_player_ui(player: Node2D):
 # Move the star tile to a new random position
 func move_star_tile():
 	star_tile = tile_coordinates[random.randi_range(0, tile_coordinates.size() - 1)]
-	print("New star tile position:", star_tile)  # Debugging line
+	print("New star tile position:", star_tile)
 
-# Function to place coins on the bonus tiles
+# Function to place coins on bonus and minus tiles
 func place_coins():
-	for position in bonus_tiles:
-		print("Placing coin at: ", position)  # Debugging line
+	# Place bonus coins
+	for coin_tile in bonus_tiles:
+		print("Placing bonus coin at: ", coin_tile)
 		var coin_instance = CoinScene.instantiate()
-		coin_instance.position = position
-		coin_instance.z_index = 10  # Make sure the coins appear above other tiles
+		coin_instance.position = coin_tile
+		coin_instance.z_index = 10
 		add_child(coin_instance)
+		coins_on_tiles[coin_tile] = coin_instance
+
+	# Place minus coins
+	for minus_tile in minus_tiles:
+		print("Placing minus coin at: ", minus_tile)
+		var minus_instance = CoinScene.instantiate()
+		minus_instance.position = minus_tile
+		minus_instance.z_index = 10
+		minus_instance.modulate = Color(1, 0, 0)  # Change the color to red to differentiate
+		add_child(minus_instance)
+		coins_on_tiles[minus_tile] = minus_instance
 
 # Start the game automatically when the scene is ready
 func _ready():
-	# Check if score labels are set
+	# Generate random bonus and minus tiles
+	generate_random_tiles()
+
 	if not player_one_score:
 		print("Warning: player_one_score label is not assigned.")
 	if not player_two_score:
 		print("Warning: player_two_score label is not assigned.")
 	
-	# Initialize the UI for both players
 	update_player_ui(player1)
 	update_player_ui(player2)
-	
-	# Start the game
-	place_coins()  # Place coins on bonus tiles
+	place_coins()
 	play_game()
 
 # Main function to control the game flow
 func play_game():
-	while true:  # Loop until the game ends
-		# Player 1 rolls the dice and moves
+	while true:
 		var player1_roll = roll_dice()
 		print("Player 1 rolls: ", player1_roll)
 		player1_position = await move_player(player1, player1_position, player1_roll)
 		
-		# Player 2's turn
 		await get_tree().create_timer(1.0).timeout
 		var player2_roll = roll_dice()
 		print("Player 2 rolls: ", player2_roll)
 		player2_position = await move_player(player2, player2_position, player2_roll)
 		
-		# Delay before looping again
 		await get_tree().create_timer(1.0).timeout

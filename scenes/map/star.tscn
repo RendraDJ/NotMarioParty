@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1gn6blhtbik5"]
+
+[ext_resource type="Texture2D" uid="uid://brcqggw71hfdf" path="res://scenes/map/Mario-Star-PNG-Photo.png" id="1_b4imh"]
+
+[node name="Star" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.013, 0.013)
+texture = ExtResource("1_b4imh")
