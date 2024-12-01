@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://bmvr6kagnh4td"]
+[gd_scene load_steps=11 format=4 uid="uid://bmvr6kagnh4td"]
 
 [ext_resource type="Script" path="res://scenes/map/game_manager.gd" id="1_h8wmp"]
 [ext_resource type="Texture2D" uid="uid://bixmv73nf1pvv" path="res://assets/characters/2d/Dungeon_Tileset.png" id="1_m23nn"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cyunqt1vy77o7" path="res://scenes/map/coin.tscn" id="5_sarix"]
 [ext_resource type="PackedScene" uid="uid://owwy7y7adup3" path="res://scenes/map/redcoin.tscn" id="6_41syi"]
 [ext_resource type="PackedScene" uid="uid://d1gn6blhtbik5" path="res://scenes/map/star.tscn" id="7_k7rfu"]
+[ext_resource type="PackedScene" uid="uid://bbe2jmwo8dsq5" path="res://scenes/map/mystery_box.tscn" id="8_e44i7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rmgyw"]
 texture = ExtResource("1_m23nn")
@@ -276,13 +277,14 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_rmgyw")
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("player1", "player2", "player_one_score", "player_two_score")]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("player1", "player2", "player_one_score", "player_two_score", "game_logs")]
 position = Vector2(0, 6)
 script = ExtResource("1_h8wmp")
 player1 = NodePath("player1")
 player2 = NodePath("player2")
 player_one_score = NodePath("player_one_score")
 player_two_score = NodePath("player_two_score")
+game_logs = NodePath("game_logs")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 
@@ -327,3 +329,20 @@ position = Vector2(432, 732)
 
 [node name="Star" parent="." instance=ExtResource("7_k7rfu")]
 position = Vector2(330, 754)
+
+[node name="MysteryBox" parent="." instance=ExtResource("8_e44i7")]
+position = Vector2(368, 732)
+scale = Vector2(0.45471, 0.45471)
+
+[node name="game_logs" type="RichTextLabel" parent="."]
+offset_left = 422.0
+offset_top = 422.0
+offset_right = 678.0
+offset_bottom = 572.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 422.0
+offset_top = 422.0
+offset_right = 678.0
+offset_bottom = 572.0
+color = Color(0.219608, 0.219608, 0.219608, 0.537255)

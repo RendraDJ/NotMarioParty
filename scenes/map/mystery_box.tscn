@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbe2jmwo8dsq5"]
+
+[ext_resource type="Texture2D" uid="uid://5we2gynm7mk" path="res://scenes/map/box.png" id="1_tudl2"]
+
+[node name="MysteryBox" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0346574, 0.0341102)
+texture = ExtResource("1_tudl2")
