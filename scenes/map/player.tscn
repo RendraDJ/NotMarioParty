@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm7spqebo1wut"]
+
+[ext_resource type="Texture2D" uid="uid://c3tnxihotdssw" path="res://assets/characters/2d/Space Cadet Sprite Sheet.png" id="1_ut8d3"]
+[ext_resource type="Script" path="res://scenes/map/player.gd" id="1_wwk42"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_wwk42")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+position = Vector2(0, -1.5)
+scale = Vector2(1, 0.925)
+texture = ExtResource("1_ut8d3")
+hframes = 8
+vframes = 5

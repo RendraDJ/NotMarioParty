@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://bmvr6kagnh4td"]
+[gd_scene load_steps=12 format=4 uid="uid://bmvr6kagnh4td"]
 
 [ext_resource type="Script" path="res://scenes/map/game_manager.gd" id="1_h8wmp"]
 [ext_resource type="Texture2D" uid="uid://bixmv73nf1pvv" path="res://assets/characters/2d/Dungeon_Tileset.png" id="1_m23nn"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://owwy7y7adup3" path="res://scenes/map/redcoin.tscn" id="6_41syi"]
 [ext_resource type="PackedScene" uid="uid://d1gn6blhtbik5" path="res://scenes/map/star.tscn" id="7_k7rfu"]
 [ext_resource type="PackedScene" uid="uid://bbe2jmwo8dsq5" path="res://scenes/map/mystery_box.tscn" id="8_e44i7"]
+[ext_resource type="PackedScene" uid="uid://cm7spqebo1wut" path="res://scenes/map/player.tscn" id="9_3ppmf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rmgyw"]
 texture = ExtResource("1_m23nn")
@@ -277,14 +278,16 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_rmgyw")
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("player1", "player2", "player_one_score", "player_two_score", "game_logs")]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("player_one_score", "player_two_score", "game_logs")]
 position = Vector2(0, 6)
 script = ExtResource("1_h8wmp")
-player1 = NodePath("player1")
-player2 = NodePath("player2")
 player_one_score = NodePath("player_one_score")
 player_two_score = NodePath("player_two_score")
 game_logs = NodePath("game_logs")
+PlayerScene = ExtResource("9_3ppmf")
+CoinScene = ExtResource("5_sarix")
+StarScene = ExtResource("7_k7rfu")
+MysteryBoxScene = ExtResource("8_e44i7")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 
@@ -303,10 +306,10 @@ use_parent_material = true
 tile_set = SubResource("TileSet_gdfbo")
 
 [node name="player1" parent="." instance=ExtResource("2_2rw6o")]
-position = Vector2(380, 609)
+position = Vector2(381, 680)
 
 [node name="player2" parent="." instance=ExtResource("3_kn03g")]
-position = Vector2(354, 612)
+position = Vector2(355, 683)
 
 [node name="player_one_score" type="Label" parent="."]
 offset_left = 38.0
@@ -334,15 +337,19 @@ position = Vector2(330, 754)
 position = Vector2(368, 732)
 scale = Vector2(0.45471, 0.45471)
 
-[node name="game_logs" type="RichTextLabel" parent="."]
-offset_left = 422.0
-offset_top = 422.0
-offset_right = 678.0
-offset_bottom = 572.0
-
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = 422.0
 offset_top = 422.0
 offset_right = 678.0
 offset_bottom = 572.0
 color = Color(0.219608, 0.219608, 0.219608, 0.537255)
+
+[node name="game_logs" type="RichTextLabel" parent="."]
+offset_left = 422.0
+offset_top = 422.0
+offset_right = 678.0
+offset_bottom = 572.0
+bbcode_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("9_3ppmf")]
+position = Vector2(462, 692)

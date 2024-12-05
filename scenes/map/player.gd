@@ -1,27 +1,35 @@
-extends Node
+extends Node2D
 
-var tile_coordinates = [
-	Vector2(377,587), Vector2(368,517), Vector2(368,452),
-	Vector2(368,388), Vector2(432,388), Vector2(495,388),
-	Vector2(558,388), Vector2(623,388), Vector2(689,388),
-	Vector2(752,388), Vector2(784,321), Vector2(784,259),
-	Vector2(784,196), Vector2(784,132), Vector2(784,67),
-	Vector2(784,4), Vector2(720,4), Vector2(655,4),
-	Vector2(592,4), Vector2(529,4), Vector2(463,4),
-	Vector2(399,4), Vector2(336,68), Vector2(271,133),
-	Vector2(208,196), Vector2(144,196), Vector2(111,259),
-	Vector2(48,259), Vector2(48,324), Vector2(48,388),
-	Vector2(48,452), Vector2(110,452), Vector2(175,452),
-	Vector2(239,452), Vector2(306,452), Vector2(368,452)
-]
+class_name Player
 
-# Set a delay for movement
-var move_delay = 0.3
+@export var player_name: String = "Unnamed Player"
+var coins: int = 0
+var stars: int = 0
+var tile_index: int = 0
 
-# Function to move the player along the path
-func move_player(player: Node2D, start_pos: int, steps: int) -> int:
-	var target_pos = min(start_pos + steps, tile_coordinates.size())
-	for i in range(start_pos, target_pos):
+var score_label: Label
+var game_manager: Node
+
+func move(tile_coordinates: Array, steps: int, move_delay: float) -> void:
+	game_manager.log_message(player_name + " rolls a " + str(steps) + " and moves.")
+	var target_index = min(tile_index + steps, tile_coordinates.size() - 1)
+	for i in range(tile_index + 1, target_index + 1):
 		await get_tree().create_timer(move_delay).timeout
-		player.position = tile_coordinates[i]
-	return target_pos
+		global_position = tile_coordinates[i]
+		tile_index = i
+	game_manager.log_message(player_name + " landed on tile " + str(tile_index) + ".")
+
+func gain_coins(amount: int):
+	coins += amount
+	coins = max(coins, 0)
+	game_manager.log_message(player_name + " now has " + str(coins) + " coins.")
+	_update_ui()
+
+func gain_star():
+	stars += 1
+	game_manager.log_message(player_name + " now has " + str(stars) + " stars.")
+	_update_ui()
+
+func _update_ui():
+	if score_label:
+		score_label.text = player_name + ": Coins = " + str(coins) + ", Stars = " + str(stars)
