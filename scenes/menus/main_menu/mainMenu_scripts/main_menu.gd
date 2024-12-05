@@ -12,7 +12,7 @@ func _process(delta: float) -> void:
 
 func _on_start_button_pressed() -> void:
 	pass # Replace with function body.
-	get_tree().change_scene_to_file("res://scenes/character_selection/character_selection.tscn")
+	get_tree().change_scene_to_file("res://scenes/map/map2.tscn")
 
 func _on_options_button_pressed() -> void:
 	pass # Replace with function body.
