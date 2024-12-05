@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://co8rmkmlukhtv"]
 
-[ext_resource type="Texture2D" uid="uid://c3tnxihotdssw" path="res://assets/characters/2d/Space Cadet Sprite Sheet.png" id="1_ivt5c"]
+[ext_resource type="Texture2D" uid="uid://c77kev5tr114r" path="res://assets/characters/2d/mario.png" id="1_yjbcl"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -8,7 +8,5 @@
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
 position = Vector2(0, -1.5)
-scale = Vector2(1, 0.925)
-texture = ExtResource("1_ivt5c")
-hframes = 8
-vframes = 5
+scale = Vector2(0.114154, 0.105592)
+texture = ExtResource("1_yjbcl")

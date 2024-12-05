@@ -306,22 +306,33 @@ use_parent_material = true
 tile_set = SubResource("TileSet_gdfbo")
 
 [node name="player1" parent="." instance=ExtResource("2_2rw6o")]
+visible = false
 position = Vector2(381, 680)
 
 [node name="player2" parent="." instance=ExtResource("3_kn03g")]
+visible = false
 position = Vector2(355, 683)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_top = 603.0
+offset_right = 831.0
+offset_bottom = 753.0
+color = Color(0.219608, 0.219608, 0.219608, 0.537255)
+metadata/_edit_use_anchors_ = true
 
 [node name="player_one_score" type="Label" parent="."]
 offset_left = 38.0
 offset_top = 613.0
 offset_right = 78.0
 offset_bottom = 636.0
+metadata/_edit_use_anchors_ = true
 
 [node name="player_two_score" type="Label" parent="."]
 offset_left = 504.0
 offset_top = 612.0
 offset_right = 544.0
 offset_bottom = 635.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Coin" parent="." instance=ExtResource("5_sarix")]
 position = Vector2(398, 727)
@@ -343,6 +354,7 @@ offset_top = 422.0
 offset_right = 678.0
 offset_bottom = 572.0
 color = Color(0.219608, 0.219608, 0.219608, 0.537255)
+metadata/_edit_use_anchors_ = true
 
 [node name="game_logs" type="RichTextLabel" parent="."]
 offset_left = 422.0
@@ -350,6 +362,7 @@ offset_top = 422.0
 offset_right = 678.0
 offset_bottom = 572.0
 bbcode_enabled = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Player" parent="." instance=ExtResource("9_3ppmf")]
 position = Vector2(462, 692)
