@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://4lmuicxdtyhr"]
+
+[ext_resource type="Script" path="res://scripts/pickup_item.gd" id="1_5x3h7"]
+[ext_resource type="Texture2D" uid="uid://b0qj3wiia64rn" path="res://tileset/candy.png" id="1_eai11"]
+[ext_resource type="Resource" uid="uid://c7niiluuandy0" path="res://Resources/Candy/candy.tres" id="2_lfyb3"]
+[ext_resource type="Shape2D" uid="uid://dtvp5gpc5a25g" path="res://Resources/Candy/candy_collision_shape.tres" id="2_q2ang"]
+
+[node name="PickUpItem" type="Area2D"]
+collision_layer = 8
+script = ExtResource("1_5x3h7")
+inventory_item = ExtResource("2_lfyb3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_eai11")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = ExtResource("2_q2ang")

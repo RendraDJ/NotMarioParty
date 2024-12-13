@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InventoryItem" load_steps=4 format=3 uid="uid://c7niiluuandy0"]
+
+[ext_resource type="Script" path="res://scripts/inventory_item.gd" id="1_0tpnd"]
+[ext_resource type="Shape2D" uid="uid://dtvp5gpc5a25g" path="res://Resources/Candy/candy_collision_shape.tres" id="1_u87mm"]
+[ext_resource type="Texture2D" uid="uid://b0qj3wiia64rn" path="res://tileset/candy.png" id="2_k7ti6"]
+
+[resource]
+script = ExtResource("1_0tpnd")
+slot_type = "NotEquipable"
+ground_collision_shape = ExtResource("1_u87mm")
+name = "Candy"
+texture = ExtResource("2_k7ti6")
+max_stacks = 0
+price = 0
